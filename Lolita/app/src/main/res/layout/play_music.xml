@@ -1,24 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="wrap_content"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <!--CD-->
+    <!--&lt;!&ndash;CD&ndash;&gt;
     <FrameLayout
         android:id="@+id/fl_play_music"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
         android:layout_marginTop="@dimen/discTopSize">
         <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="350dp"
+            android:layout_height="350dp"
+            android:layout_gravity="center"
             android:src="@mipmap/disc"/>
-        <!--CircleImageView-->
+        &lt;!&ndash;CircleImageView&ndash;&gt;
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/iv_pic"
-            android:layout_width="300dp"
-            android:layout_height="300dp"
+            android:layout_width="250dp"
+            android:layout_height="250dp"
             android:layout_gravity="center"
             app:civ_border_width="1dp"
             app:civ_border_color="@android:color/black"/>
@@ -30,13 +32,47 @@
             android:layout_gravity="center"
             android:visibility="gone"/>
     </FrameLayout>
-  <!--pointer-->
+    &lt;!&ndash;pointer&ndash;&gt;
     <ImageView
         android:id="@+id/needle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="180dp"
+        android:layout_height="180dp"
         android:src="@mipmap/needle"
         android:layout_gravity="center_horizontal"
         android:layout_marginLeft="25dp"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginTop="560dp"
+        android:gravity="center"
+        >
+        <TextView
+            android:id="@+id/music_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="音乐名称"
+            android:textColor="@android:color/white"
+            android:textStyle="bold"
+            android:textSize="@dimen/titleSize"
+            />
+        <TextView
+            android:id="@+id/singer_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="歌手"
+            android:textColor="@android:color/white"
+            android:textStyle="bold"
+            android:textSize="@dimen/titleSize"
+            android:layout_margin="@dimen/marginSize"
+            />
+    <SeekBar
+        android:id="@+id/playing_music_bar"
+        android:layout_width="match_parent"
+        android:layout_height="5dp"
+        android:background="@color/mainColor"
+        />
+    
+    </LinearLayout>-->
 
 </FrameLayout>

@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.PopupMenu;
 
 import com.bumptech.glide.Glide;
 import com.example.lolita.R;
@@ -22,7 +23,9 @@ public class MusicListAdapter extends RecyclerView.Adapter<MusicListAdapter.View
 
     private Context mContext;
     private View mItemView;
+
     private RecyclerView mRv;
+    private LinearLayout ivMore;
     private boolean isCalculationRecyclerView;
     public MusicListAdapter (Context context, RecyclerView recyclerView){
 
@@ -46,9 +49,19 @@ public class MusicListAdapter extends RecyclerView.Adapter<MusicListAdapter.View
         Glide.with(mContext)
                 .load("http://192.168.180.83:8089/goodday/image/photo/a2-s.jpg")
                 .into(viewHolder.ivIcon);
+        /**
+         * 给ivMore添加监听事件，用户点击了，就弹出小页面*/
+        ivMore.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+
         viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                //TODO 改为点击音乐
                  Intent intent = new Intent(mContext, PlayMusicActivity.class);
                  mContext.startActivity(intent);
             }
@@ -58,6 +71,11 @@ public class MusicListAdapter extends RecyclerView.Adapter<MusicListAdapter.View
     @Override
     public int getItemCount() {
         return 6;
+    }
+    /**
+     * 弹出小页面*/
+    private void initPopMoreView(){
+
     }
     /**
     * 1. 获取itemView的高度
@@ -87,6 +105,7 @@ public class MusicListAdapter extends RecyclerView.Adapter<MusicListAdapter.View
 
             this.itemView = itemView;
             ivIcon = itemView.findViewById(R.id.iv_icon);
+            ivMore = itemView.findViewById(R.id.music_more);
 
         }
     }

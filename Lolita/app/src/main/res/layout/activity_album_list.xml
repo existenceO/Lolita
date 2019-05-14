@@ -3,32 +3,182 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:orientation="vertical"
-    tools:context=".acitvities.AlbumListActivity">
+    tools:context=".acitvities.AlbumListActivity"
+    android:background="@android:color/darker_gray">
     <include layout="@layout/nav_bar"/>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:layout_marginTop="@dimen/marginSize"
-        android:layout_marginLeft="@dimen/marginSize"
         android:layout_marginBottom="@dimen/marginSize"
+       >
+        <FrameLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/marginSize"
+            android:layout_marginLeft="@dimen/marginSize"
+            >
+           <com.example.lolita.views.WEqualsHImageView
+               android:layout_marginTop="@dimen/marginSize"
+               android:layout_width="120dp"
+               android:layout_height="wrap_content"
+               android:src="@mipmap/img1"/>
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/marginSize"
+                android:layout_gravity="right">
+            <ImageView
+                android:layout_width="@dimen/playNumSize"
+                android:layout_height="@dimen/playNumSize"
+                android:src="@mipmap/play_num"
+                />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="1000"
+                    android:textColor="@android:color/white"
+                    android:textStyle="bold"/>
+            </LinearLayout>
+        </FrameLayout>
+<LinearLayout
+    android:layout_width="wrap_content"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:layout_marginLeft="@dimen/marginSize"
+    android:paddingTop="@dimen/marginSize"
+    android:layout_marginTop="@dimen/marginSize"
+    android:layout_weight="1">
+    <TextView
+        android:id="@+id/list_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="歌单名"
+        android:textColor="@android:color/white"
+        android:textSize="@dimen/titleSize"
+        android:textStyle="bold"
+         android:layout_margin="@dimen/marginTabSize"
+
+        />
+   <!-- <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginBottom="@dimen/marginTabSize"
+        >
+        <ImageView
+
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@mipmap/play_1"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="播放全部"
+            android:textColor="@android:color/white"
+            android:textSize="@dimen/titleSize"
+            android:layout_marginTop="@dimen/marginTabSize"
+            android:layout_marginLeft="@dimen/marginTabSize"
+            />
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        >
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@mipmap/add_list"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="收藏"
+            android:textColor="@android:color/white"
+            android:textSize="@dimen/titleSize"
+            android:layout_marginTop="@dimen/marginTabSize"
+            android:layout_marginLeft="@dimen/marginTabSize"/>
+    </LinearLayout>-->
+</LinearLayout>
+
+
+    </LinearLayout>
+   <LinearLayout
+       android:layout_width="match_parent"
+       android:layout_height="wrap_content"
+       android:orientation="horizontal"
+       android:layout_margin="@dimen/marginTabSize"
+       >
+       <LinearLayout
+           android:id="@+id/play_all_music"
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           android:orientation="horizontal"
+           android:layout_weight="1">
+           <ImageView
+               android:layout_width="wrap_content"
+               android:layout_height="wrap_content"
+               android:src="@mipmap/play_1"/>
+           <TextView
+               android:layout_width="wrap_content"
+               android:layout_height="wrap_content"
+               android:text="播放全部"
+               android:textColor="@android:color/white"
+               android:textSize="@dimen/titleSize"
+               android:layout_marginTop="@dimen/marginTabSize"
+               android:layout_marginLeft="@dimen/marginTabSize"/>
+       </LinearLayout>
+
+       <LinearLayout
+           android:id="@+id/collect_list"
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           android:orientation="horizontal"
+           android:layout_weight="1">
+           <ImageView
+               android:layout_width="wrap_content"
+               android:layout_height="wrap_content"
+               android:src="@mipmap/add_list"/>
+           <TextView
+               android:layout_width="wrap_content"
+               android:layout_height="wrap_content"
+               android:text="收藏"
+               android:textColor="@android:color/white"
+               android:textSize="@dimen/titleSize"
+               android:layout_marginTop="@dimen/marginTabSize"
+               android:layout_marginLeft="@dimen/marginTabSize"/>
+       </LinearLayout>
+   </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+       android:background="@drawable/album_list_radius">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+
         >
 
         <View
             android:layout_width="4dp"
             android:layout_height="22dp"
             android:background="@color/mainColor"
+            android:layout_margin="10dp"
             />
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+           android:layout_marginTop="10dp"
             android:text=" 专辑音乐"
             android:textColor="@color/titleColor"
             android:textSize="@dimen/titleSize"
             android:textStyle="bold"
-            android:layout_marginLeft="@dimen/marginTabSize"
+
             />
 
     </LinearLayout>
@@ -37,4 +187,5 @@
         android:id="@+id/rv_list"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
+</LinearLayout>
 </LinearLayout>

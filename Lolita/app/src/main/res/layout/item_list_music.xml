@@ -5,7 +5,8 @@
     android:layout_height="wrap_content"
     android:orientation="horizontal"
     android:background="@drawable/item_commit_selector"
-    android:padding="@dimen/marginSize">
+    android:padding="@dimen/marginSize"
+   >
 <ImageView
     android:id="@+id/iv_icon"
     android:layout_width="@dimen/itemIconSize"
@@ -16,7 +17,8 @@
         android:layout_height="match_parent"
          android:layout_weight="1"
         android:orientation="vertical"
-        android:layout_marginLeft="@dimen/marginSize">
+        android:layout_marginLeft="@dimen/marginSize"
+        >
       <TextView
           android:layout_width="match_parent"
           android:layout_height="0dp"
@@ -36,11 +38,18 @@
 
 
     </LinearLayout>
-    <ImageView
-        android:layout_width="@dimen/itemPlayIcon"
-        android:layout_height="@dimen/itemPlayIcon"
-        android:src="@mipmap/play"
-        android:layout_gravity="center_vertical"
-        android:layout_marginLeft="@dimen/marginSize"/>
+    <LinearLayout
+        android:id="@+id/music_more"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent">
+        <ImageView
+
+            android:layout_width="@dimen/titleSize"
+            android:layout_height="@dimen/itemPlayIcon"
+            android:src="@mipmap/more"
+            android:layout_gravity="center"
+            android:layout_marginLeft="@dimen/marginSize"/>
+    </LinearLayout>
+
 
 </LinearLayout>

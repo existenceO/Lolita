@@ -5,6 +5,7 @@ import android.media.MediaPlayer;
 import android.net.Uri;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 
 public class MediaPlayerHelp {
@@ -14,7 +15,8 @@ public class MediaPlayerHelp {
     private MediaPlayer mMediaPlayer;
     private String mPath;
     private OnMediaPlayerHelperListener onMediaPlayerHelperListener;
-
+    private int index;
+    private ArrayList<String> musicPath;
     public void setOnMediaPlayerHelperListener(OnMediaPlayerHelperListener onMediaPlayerHelperListener) {
         this.onMediaPlayerHelperListener = onMediaPlayerHelperListener;
     }
@@ -40,8 +42,6 @@ public class MediaPlayerHelp {
      * 1.setPath:播放音乐的路径
      * 2.start: 播放音乐
      * 3.pause:暂停播放
-     * 4.上一首
-     * 5。下一首
      */
 
     /**
@@ -57,11 +57,12 @@ public class MediaPlayerHelp {
          * 2.设置播放音乐路径
          * 3.准备播放
          */
-        mPath = path;
-//        音乐重置
-        if(mMediaPlayer.isPlaying()){
+
+//        音乐正在播放，重置音乐播放状态
+        if(mMediaPlayer.isPlaying() || !path.equals(mPath)){
             mMediaPlayer.reset();
         }
+        mPath = path;
 //        设置播放路径
         try {
             mMediaPlayer.setDataSource(mContext, Uri.parse(path));
@@ -83,7 +84,19 @@ public class MediaPlayerHelp {
                }
             }
         });
+//        监听播放音乐完成
+        mMediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+            @Override
+            public void onCompletion(MediaPlayer mp) {
+                if(onMediaPlayerHelperListener != null){
+                    onMediaPlayerHelperListener.onCompletion(mp);
+                }
+            }
+        });
     }
+
+    //监听音乐是否播放完成
+
    /**       播放音乐
 
     */
@@ -97,9 +110,12 @@ public class MediaPlayerHelp {
     public void pause(){
             mMediaPlayer.pause();
     }
-
+    public int getMusicPosition(){
+          return  mMediaPlayer.getCurrentPosition();
+    }
     public interface OnMediaPlayerHelperListener{
         void onPrepared(MediaPlayer mp);
+       void onCompletion(MediaPlayer mp);
     }
 
 
