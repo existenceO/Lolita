@@ -1,7 +1,10 @@
 package com.example.lolita.acitvities;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.media.MediaPlayer;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -19,10 +22,12 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.example.lolita.R;
 import com.example.lolita.helps.MediaPlayerHelp;
+import com.example.lolita.utils.UserUtils;
 //import com.example.lolita.views.PlayMusicView;
 
 import java.util.ArrayList;
 import java.util.Random;
+import java.util.TimerTask;
 
 import jp.wasabeef.glide.transformations.BlurTransformation;
 
@@ -30,7 +35,7 @@ public class PlayMusicActivity extends AppCompatActivity {
 
     private ImageView mIvBg;
 //    private PlayMusicView mPlayMusicView;
-    private Thread seekBarThread;
+//    private Thread seekBarThread;
     private int PlayStyle;
     private int index = 0;//播放的索引
     private boolean flag = false;
@@ -48,6 +53,15 @@ public class PlayMusicActivity extends AppCompatActivity {
     private MediaPlayerHelp mMeidaPlayerHelp;
     private TextView mTvSingerName, mTvMusicName;
     private Animation mPlayMusicAnim, mPlayNeedleAnim, mStopNeedleAnim;
+
+    /*@SuppressLint("HandlerLeak")
+    private Handler handler = new Handler(){
+        @Override
+        public void handleMessage(Message msg){
+            super.handleMessage(msg);
+            mSeekBar.setProgress(msg.what);
+        }
+    };*/
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -55,8 +69,25 @@ public class PlayMusicActivity extends AppCompatActivity {
        //隐藏statusBar
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         initView();
+//       new GetTimeThread().run();
+        System.out.println("线程启动");
 
     }
+ /*   class GetTimeThread implements Runnable{
+        @Override
+        public void run(){
+            while(isPlay){
+                int position = mMeidaPlayerHelp.getMusicPosition();
+                handler.sendEmptyMessage(position);
+                try{
+                    Thread.sleep(500);
+                }catch (InterruptedException ex){
+                    ex.printStackTrace();
+                }
+            }
+        }
+    }
+*/
     private void initView(){
         mIvIcon = findViewById(R.id.iv_pic);
         mPlayMusic = findViewById(R.id.fl_play_music);
@@ -91,7 +122,7 @@ public class PlayMusicActivity extends AppCompatActivity {
 
 
 
-        mMeidaPlayerHelp = MediaPlayerHelp.getInstance(this);
+
 
         /**
          *加载图片
@@ -119,14 +150,18 @@ public class PlayMusicActivity extends AppCompatActivity {
         music_singer_name.add("Tom");
         music_singer_name.add("Marry");
 
+        mMeidaPlayerHelp = MediaPlayerHelp.getInstance(this);
         /**播放音乐
          *
          */
 
                 flag = true;
-        PlayMusic(music_list_name.get(index));//uri
+         PlayMusic(music_list_name.get(index));//uri
         setMusicName(music_music_name.get(index));
         setSingerName(music_singer_name.get(index));
+
+
+
 //        监听顺序图标的变化
         mIvPlaySequenceListener();
 //        playMusicSequence();
@@ -134,6 +169,7 @@ public class PlayMusicActivity extends AppCompatActivity {
         mIvLast.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                mIvPlayOrPause.setImageResource(R.mipmap.pause);
                 if(PlayStyle == 0 || PlayStyle == 2)
                 lastMusic();//上一首
                 else if(PlayStyle == 1)
@@ -150,13 +186,16 @@ public class PlayMusicActivity extends AppCompatActivity {
         mIvNext.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                mIvPlayOrPause.setImageResource(R.mipmap.pause);
                 if(PlayStyle == 0 || PlayStyle == 2)
-                nextMusic();
+                   nextMusic();
                 else if(PlayStyle == 1)
                     randomPlay();
             }
         });
     }
+
+
 
 
     /**
@@ -186,7 +225,7 @@ public class PlayMusicActivity extends AppCompatActivity {
 
         }else {
             mIvPlayOrPause.setImageResource(R.mipmap.pause);
-            PlayMusic(mPath);
+            PlayMusic(music_list_name.get(index));
         }
 
     }
@@ -194,9 +233,8 @@ public class PlayMusicActivity extends AppCompatActivity {
      * 播放音乐
      */
 
-    public void PlayMusic(String path){
+    public void PlayMusic(String path) {
         mPath = path;
-        isPlay = true;
         mIvPlay.setVisibility(View.GONE);
         mPlayMusic.startAnimation(mPlayMusicAnim);
         mNeedle.startAnimation(mPlayNeedleAnim);
@@ -206,42 +244,34 @@ public class PlayMusicActivity extends AppCompatActivity {
          * 3.否，播放的是其他音乐，重置media player，setPath()
          */
 //        TODO //        启动服务 //        startMusicService();将下面部分搬到MusicService,extends service
-
-
 //
-        if( mMeidaPlayerHelp.getPath() != null
-                && mMeidaPlayerHelp.getPath().equals(path) && !isPlay){
+
+        if (mMeidaPlayerHelp.getPath() != null
+                && mMeidaPlayerHelp.getPath().equals(path) && !isPlay) {
             mMeidaPlayerHelp.start();
-        }else {
+        } else {
             mMeidaPlayerHelp.setPath(path);
-            mMeidaPlayerHelp.setOnMediaPlayerHelperListener(new MediaPlayerHelp.OnMediaPlayerHelperListener() {
+
+           mMeidaPlayerHelp.setOnMediaPlayerHelperListener(new MediaPlayerHelp.OnMediaPlayerHelperListener() {
                 @Override
                 public void onPrepared(MediaPlayer mp) {
                     mMeidaPlayerHelp.start();
                 }
-                 @Override
-                  public void onCompletion(MediaPlayer mp) {
-                      //监听音乐是否播放完
-                     //下一曲
-                     playMusicSequence();
-                  }
-            });
-        }
-        seekBarThread = new Thread(new Runnable() {
-            @Override
-            public void run() {
-              //  mSeekBar.setProgress(mMeidaPlayerHelp.getMusicPosition());
-                try {
-                    // 每500毫秒更新一次位置
-                    Thread.sleep(500);
-                    // 播放进度
 
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
+                @Override
+                public void onCompletion(MediaPlayer mp) {
+                    //监听音乐是否播放完
+                    //下一曲
+//                    playMusicSequence();
                 }
-            }
-        });
-   //     seekBarThread.start();
+            });
+
+        }
+        isPlay = true;
+       // int max = mMeidaPlayerHelp.getMusicDuration();
+        //mSeekBar.setMax(max);
+
+
     }
     /**
      * 停止播放
@@ -325,6 +355,7 @@ public class PlayMusicActivity extends AppCompatActivity {
         if (index < 0) {
             index = music_list_name.size() - 1;
         }
+
         PlayMusic(music_list_name.get(index));
         setMusicName(music_music_name.get(index));
         setSingerName(music_singer_name.get(index));

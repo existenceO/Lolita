@@ -59,14 +59,20 @@ public class MediaPlayerHelp {
          */
 
 //        音乐正在播放，重置音乐播放状态
-        if(mMediaPlayer.isPlaying() || !path.equals(mPath)){
+
+
+        if( mMediaPlayer.isPlaying()|| !path.equals(mPath)){
             mMediaPlayer.reset();
         }
         mPath = path;
 //        设置播放路径
         try {
-            mMediaPlayer.setDataSource(mContext, Uri.parse(path));
-        } catch (IOException e) {
+            mMediaPlayer.setDataSource(mContext, Uri.parse(mPath));
+        }catch (IllegalStateException ex){
+            ex.printStackTrace();
+            System.out.println(ex);
+        }
+        catch (IOException e) {
             e.printStackTrace();
         }
 //        准备播放
@@ -110,6 +116,14 @@ public class MediaPlayerHelp {
     public void pause(){
             mMediaPlayer.pause();
     }
+/**
+ * 获得歌曲总长度
+ **/
+public int getMusicDuration(){
+    return mMediaPlayer.getDuration();
+}
+    /**
+     * 获得当前歌曲长度*/
     public int getMusicPosition(){
           return  mMediaPlayer.getCurrentPosition();
     }
