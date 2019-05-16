@@ -101,7 +101,10 @@ public class MediaPlayerHelp {
         });
     }
 
-    //监听音乐是否播放完成
+    //监听音乐是否播放
+    public boolean isPlaying(){
+        return mMediaPlayer.isPlaying();
+    }
 
    /**       播放音乐
 
@@ -117,16 +120,22 @@ public class MediaPlayerHelp {
             mMediaPlayer.pause();
     }
 /**
+ * 释放音乐*
+ * */
+public void stop(){
+    mMediaPlayer.release();
+}
+/**
  * 获得歌曲总长度
- **/
+
 public int getMusicDuration(){
     return mMediaPlayer.getDuration();
-}
+}**/
     /**
-     * 获得当前歌曲长度*/
+     * 获得当前歌曲长度
     public int getMusicPosition(){
           return  mMediaPlayer.getCurrentPosition();
-    }
+    }*/
     public interface OnMediaPlayerHelperListener{
         void onPrepared(MediaPlayer mp);
        void onCompletion(MediaPlayer mp);

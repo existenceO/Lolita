@@ -25,6 +25,8 @@ import com.example.lolita.helps.MediaPlayerHelp;
 import com.example.lolita.utils.UserUtils;
 //import com.example.lolita.views.PlayMusicView;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.ArrayList;
 import java.util.Random;
 import java.util.TimerTask;
@@ -53,13 +55,23 @@ public class PlayMusicActivity extends AppCompatActivity {
     private MediaPlayerHelp mMeidaPlayerHelp;
     private TextView mTvSingerName, mTvMusicName;
     private Animation mPlayMusicAnim, mPlayNeedleAnim, mStopNeedleAnim;
+    private int duration;
 
-    /*@SuppressLint("HandlerLeak")
+   /* @SuppressLint("HandlerLeak")
     private Handler handler = new Handler(){
         @Override
-        public void handleMessage(Message msg){
-            super.handleMessage(msg);
-            mSeekBar.setProgress(msg.what);
+        public void handleMessage(@NotNull Message msg){
+           // super.handleMessage(msg);
+          //   int duration = mMeidaPlayerHelp.getMusicDuration();
+           // int progress  =  100 * (msg.what / duration);
+         //   System.out.println(duration);
+//            mSeekBar.setProgress(progress);
+
+                int position = msg.arg1;
+                int duration = msg.arg2;
+                System.out.println("d:" + duration + " p:" + position);
+                mSeekBar.setProgress(50);
+
         }
     };*/
     @Override
@@ -68,17 +80,45 @@ public class PlayMusicActivity extends AppCompatActivity {
         setContentView(R.layout.activity_play_music);
        //隐藏statusBar
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
-        initView();
-//       new GetTimeThread().run();
-        System.out.println("线程启动");
+        /*new Thread() {
+            public void run() {*/
+          mMeidaPlayerHelp = MediaPlayerHelp.getInstance(this);
+                initView();
+    /*        }
+        }.start();*/
+        // new GetTimeThread().run();
+     //   if(mMeidaPlayerHelp != null ){
+  /*      new Thread(){
+            @Override
+            public void run(){
+                while( isPlay && mMeidaPlayerHelp.isPlaying()){
+                    int position = mMeidaPlayerHelp.getMusicPosition();
+                  //  int duration = mMeidaPlayerHelp.getMusicDuration();
+                    Message msg = new Message();
+                      msg.what = 1;
+                      msg.arg1 =position;
+                      msg.arg2 = duration;
+                      handler.sendMessage(msg);
+//                     handler.sendEmptyMessage(position);
+                  System.out.println("position1: "+ position);
+                    try{
+                        Thread.sleep(500);
+                    }catch (InterruptedException ex){
+                        ex.printStackTrace();
+                    }
+                }
+            }
+        }.start();
+        System.out.println("线程启动");*/
 
     }
- /*   class GetTimeThread implements Runnable{
+  /* class GetTimeThread implements Runnable{
         @Override
         public void run(){
             while(isPlay){
                 int position = mMeidaPlayerHelp.getMusicPosition();
-                handler.sendEmptyMessage(position);
+               // handler.sendEmptyMessage(position);
+                System.out.println("position: "+ position);
                 try{
                     Thread.sleep(500);
                 }catch (InterruptedException ex){
@@ -86,8 +126,13 @@ public class PlayMusicActivity extends AppCompatActivity {
                 }
             }
         }
-    }
-*/
+    }*/
+@Override
+  protected void onDestroy() {
+        mMeidaPlayerHelp.stop();
+      super.onDestroy();
+
+  }
     private void initView(){
         mIvIcon = findViewById(R.id.iv_pic);
         mPlayMusic = findViewById(R.id.fl_play_music);
@@ -150,7 +195,7 @@ public class PlayMusicActivity extends AppCompatActivity {
         music_singer_name.add("Tom");
         music_singer_name.add("Marry");
 
-        mMeidaPlayerHelp = MediaPlayerHelp.getInstance(this);
+
         /**播放音乐
          *
          */
@@ -262,12 +307,14 @@ public class PlayMusicActivity extends AppCompatActivity {
                 public void onCompletion(MediaPlayer mp) {
                     //监听音乐是否播放完
                     //下一曲
-//                    playMusicSequence();
+                    playMusicSequence();
                 }
             });
 
         }
         isPlay = true;
+      //  duration = mMeidaPlayerHelp.getMusicDuration();
+     //   System.out.println(duration);
        // int max = mMeidaPlayerHelp.getMusicDuration();
         //mSeekBar.setMax(max);
 
