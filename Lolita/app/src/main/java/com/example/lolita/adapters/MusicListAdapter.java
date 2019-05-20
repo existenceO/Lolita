@@ -35,13 +35,14 @@ public class MusicListAdapter extends RecyclerView.Adapter<MusicListAdapter.View
 
     private Context mContext;
     private View mItemView;
-    private  PopupWindow popupWindow;
+    private  PopupWindow popupWindow,popupAddToCollection;
     private RecyclerView mRv;
     private LinearLayout ivMore;
     private LinearLayout mAddCollectionList;
     private boolean isCalculationRecyclerView;
     private View contentView;
-    public MusicListAdapter (Context context, RecyclerView recyclerView){
+    private int mlistType;//个人创建的歌单or专辑歌单
+    public MusicListAdapter (Context context, RecyclerView recyclerView, int listType){
 
         mContext = context;
         mRv = recyclerView;

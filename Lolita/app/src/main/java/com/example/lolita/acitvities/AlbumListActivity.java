@@ -18,6 +18,7 @@ public class AlbumListActivity extends BaseActivity {
      private RecyclerView mRvList;
      private MusicListAdapter mListAdapter;
      private LinearLayout mPlayAllMusic;
+     private int ALBUM_LIST = 1;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
