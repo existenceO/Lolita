@@ -1,7 +1,9 @@
 package com.example.lolita.adapters;
 
 import android.app.Activity;
+import android.app.DatePickerDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
@@ -26,6 +28,10 @@ import com.bumptech.glide.Glide;
 import com.example.lolita.R;
 import com.example.lolita.acitvities.AlbumListActivity;
 import com.example.lolita.acitvities.PlayMusicActivity;
+
+import java.util.ArrayList;
+import android.support.v7.app.AlertDialog;
+
 /**
  *推荐音乐及专辑音乐adapter
  */
@@ -35,17 +41,25 @@ public class MusicListAdapter extends RecyclerView.Adapter<MusicListAdapter.View
 
     private Context mContext;
     private View mItemView;
-    private  PopupWindow popupWindow,popupAddToCollection;
+    private  PopupWindow popupWindow;
     private RecyclerView mRv;
     private LinearLayout ivMore;
-    private LinearLayout mAddCollectionList;
+    private LinearLayout mAddCollectionList, mDeleteCollectionList;
     private boolean isCalculationRecyclerView;
     private View contentView;
+    private ArrayList<String>item = new ArrayList<>();
     private int mlistType;//个人创建的歌单or专辑歌单
-    public MusicListAdapter (Context context, RecyclerView recyclerView, int listType){
+    private final int ALBUM_LIST_TYPE = 1;
+    private final int MY_COLLECTED_LIST = 2;
+    private final int MY_CREATED_LSIT = 3;
+    private  String[] items = new String[]{"第一个歌单","第二个歌单","第三个歌单"};
+
+    private int choice;
+    public MusicListAdapter (Context context, RecyclerView recyclerView,int listType){
 
         mContext = context;
         mRv = recyclerView;
+        mlistType = listType;
 
     }
 
@@ -54,10 +68,21 @@ public class MusicListAdapter extends RecyclerView.Adapter<MusicListAdapter.View
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
         mItemView = LayoutInflater.from(mContext).inflate(R.layout.item_list_music,viewGroup, false);
          contentView = LayoutInflater.from(mContext).inflate(R.layout.pop_music_detail,null);
+        mAddCollectionList = contentView.findViewById(R.id.add_collection);
+        mDeleteCollectionList = contentView.findViewById(R.id.delete_collection);
+        if(mlistType == ALBUM_LIST_TYPE ){
+            mDeleteCollectionList.setVisibility(View.GONE);
+        }else if(mlistType == MY_COLLECTED_LIST || mlistType == MY_CREATED_LSIT){
+            mAddCollectionList.setVisibility(View.GONE);
+
+
+        }
 //        LinearLayout add_collection = contentView.findViewById(R.id.add_collection);
         popupWindow = new PopupWindow(contentView, ViewGroup.LayoutParams.WRAP_CONTENT,ViewGroup.LayoutParams.WRAP_CONTENT,true);
 //        popupWindow.setBackgroundDrawable(contentView.getResources().getDrawable(android.R.color.transparent));
         popupWindow.setBackgroundDrawable(new BitmapDrawable(contentView.getResources(), (Bitmap) null));
+
+
 
         return new ViewHolder(mItemView);
     }
@@ -88,9 +113,11 @@ public class MusicListAdapter extends RecyclerView.Adapter<MusicListAdapter.View
                     mAddCollectionList.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            Toast.makeText(mContext, "被点击了", Toast.LENGTH_SHORT).show();
+                            popupWindow.dismiss();
+                            showSingleChoiceDialog();
                         }
                     });
+
 //                popupWindow.showAsDropDown(mRv);
 //                Toast.makeText(mContext, "被点击了", Toast.LENGTH_SHORT).show();
                 Log.e("viewType",Integer.toString(ViewType));
@@ -101,8 +128,20 @@ public class MusicListAdapter extends RecyclerView.Adapter<MusicListAdapter.View
             @Override
             public void onClick(View v) {
                 //TODO 改为点击音乐
-                 Intent intent = new Intent(mContext, PlayMusicActivity.class);
-                 mContext.startActivity(intent);
+//                如果是AlbumListActivity使用adapter，则点击item后跳转到播放音乐界面
+                if(mlistType == ALBUM_LIST_TYPE) {
+
+                    Intent intent = new Intent(mContext, PlayMusicActivity.class);
+                    mContext.startActivity(intent);
+//                    如果是个人收藏歌单或者创建的歌单
+                }else if(mlistType == MY_COLLECTED_LIST || mlistType == MY_CREATED_LSIT){
+
+                    Intent intent = new Intent(mContext, AlbumListActivity.class);
+                    if(mlistType == MY_CREATED_LSIT){
+                    intent.putExtra("listType",MY_CREATED_LSIT );
+                    }
+                    mContext.startActivity(intent);
+                }
             }
         });
     }
@@ -120,7 +159,38 @@ public class MusicListAdapter extends RecyclerView.Adapter<MusicListAdapter.View
          ((Activity)mContext).getWindow().setAttributes(layoutParams);
 
      }
-    /**
+
+/**
+ *弹出对话框选择将歌曲加入某个用户创建的歌单中
+ *  */
+private void showSingleChoiceDialog(){
+
+
+    AlertDialog.Builder singleChoiceDialog = new AlertDialog.Builder(mContext);
+    singleChoiceDialog.setTitle("我创建的歌单");
+    singleChoiceDialog.setSingleChoiceItems(items, 0, new DialogInterface.OnClickListener() {
+        @Override
+        public void onClick(DialogInterface dialog, int which) {
+            choice= which;
+        }
+    });
+
+    singleChoiceDialog.setPositiveButton("确定", new DialogInterface.OnClickListener() {
+        @Override
+        public void onClick(DialogInterface dialog, int which) {
+            if (choice!=-1){
+                Toast.makeText(mContext,
+                        "添加成功",
+                        Toast.LENGTH_SHORT).show();
+            }
+        }
+    });
+    singleChoiceDialog.show();
+
+
+}
+
+/**
     * 1. 获取itemView的高度
      * 2.获取itemView的数量
      * 3. itemViewHeght * itemView 得到recyclerView的高度*/
@@ -145,12 +215,11 @@ public class MusicListAdapter extends RecyclerView.Adapter<MusicListAdapter.View
          View itemView;
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-
             this.itemView = itemView;
             ivIcon = itemView.findViewById(R.id.iv_icon);
             ivMore = itemView.findViewById(R.id.music_more);
 
-            mAddCollectionList = contentView.findViewById(R.id.add_collection);
+
 
         }
     }

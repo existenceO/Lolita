@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/fg_mainHome"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -12,36 +13,40 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical">
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_marginTop="@dimen/marginSize"
                 android:layout_marginLeft="@dimen/marginSize"
+                android:layout_marginTop="@dimen/marginSize"
                 android:layout_marginBottom="@dimen/marginSize"
-                >
+                android:orientation="horizontal"
+                android:id="@+id/tabMyCreatedAlbum">
+
                 <ImageView
+                    android:id="@+id/CreatedArrow"
                     android:layout_width="22dp"
                     android:layout_height="22dp"
-                    android:src="@drawable/home_arrow_selector"/>
+                    android:src="@drawable/home_arrow_selector" />
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text=" 我的歌单"
-                    android:textColor="@color/titleColor"
-                    android:textSize="@dimen/titleSize"
-                    android:textStyle="bold"
                     android:layout_marginLeft="@dimen/marginTabSize"
                     android:layout_weight="1"
-                    />
+                    android:text="我的歌单"
+                    android:textColor="@color/titleColor"
+                    android:textSize="@dimen/titleSize"
+                    android:textStyle="bold" />
 
                 <ImageView
+                    android:id="@+id/manage_created_list"
                     android:layout_width="24dp"
                     android:layout_height="24dp"
-                    android:gravity="center_vertical"
-                    android:src="@mipmap/setting"
                     android:layout_weight="0"
-                    android:paddingRight="10dp"/>
+                    android:gravity="center_vertical"
+                    android:paddingRight="10dp"
+                    android:src="@mipmap/setting" />
             </LinearLayout>
 
           <android.support.v7.widget.RecyclerView
@@ -49,36 +54,40 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:visibility="gone"/>
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
                 android:layout_marginTop="@dimen/marginSize"
-                android:paddingLeft="@dimen/marginSize"
                 android:layout_marginBottom="@dimen/marginSize"
-                >
+                android:orientation="horizontal"
+                android:paddingLeft="@dimen/marginSize"
+                android:id="@+id/tabMyCollectedAlbum">
+
                 <ImageView
+                    android:id="@+id/CollectedArrow"
                     android:layout_width="22dp"
                     android:layout_height="22dp"
-                    android:src="@drawable/home_arrow_selector"/>
+                    android:src="@drawable/home_arrow_selector" />
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_weight="1"
                     android:text=" 我的收藏"
                     android:textColor="@color/titleColor"
                     android:textSize="@dimen/titleSize"
-                    android:textStyle="bold"
 
-                    android:layout_weight="1"
-                    />
+                    android:textStyle="bold" />
 
                 <ImageView
+                    android:id="@+id/manage_collected_list"
                     android:layout_width="24dp"
                     android:layout_height="24dp"
-                    android:gravity="center_vertical"
-                    android:src="@mipmap/setting"
                     android:layout_weight="0"
-                    android:paddingRight="10dp"/>
+                    android:gravity="center_vertical"
+                    android:paddingRight="10dp"
+                    android:src="@mipmap/setting" />
             </LinearLayout>
 
            <android.support.v7.widget.RecyclerView

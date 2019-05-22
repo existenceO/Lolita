@@ -1,24 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="300dp"
     android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
+    android:background="@drawable/popwindow_radius"
+    android:padding="@dimen/marginSize">
 
-    >
-
-<LinearLayout
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-     android:background="@drawable/popwindow_radius"
-    android:padding="@dimen/marginSize"
-    android:orientation="vertical">
 <LinearLayout
     android:id="@+id/add_collection"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:gravity="bottom|center_horizontal"
+    android:orientation="vertical">
+<LinearLayout
 
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="bottom|center_horizontal"
+    android:visibility="visible"
     android:orientation="horizontal">
     <ImageView
         android:layout_width="wrap_content"
@@ -27,7 +26,6 @@
 
         />
     <TextView
-
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:paddingLeft="@dimen/marginTabSize"
@@ -38,8 +36,45 @@
 
 </LinearLayout>
     <View style="@style/line2"/>
+</LinearLayout>
+    <LinearLayout
+        android:id="@+id/delete_collection"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+    <LinearLayout
+
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="bottom|center_horizontal"
+          android:visibility="visible"
+        android:orientation="horizontal">
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@mipmap/delete"
+
+            />
+        <TextView
+
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingLeft="@dimen/marginTabSize"
+            android:text="删除歌单"
+            android:textSize="@dimen/titleSize"
+            android:layout_weight="1"/>
+
+
+    </LinearLayout>
+    <View style="@style/line2"/>
+    </LinearLayout>
     <LinearLayout
         android:id="@+id/歌手"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+    <LinearLayout
+
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="bottom|center_horizontal"
@@ -61,4 +96,4 @@
     <View
         style="@style/line2"/>
     </LinearLayout>
-</RelativeLayout>
+</LinearLayout>

@@ -19,6 +19,7 @@ public class MainMusicFragment extends Fragment {
     private MusicGridAdapter mGridAdapter;
     private MusicListAdapter mListAdapter;
     private View rootView;//要绑定的layout
+    private int ALBUM_LIST = 1;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -48,7 +49,7 @@ public class MainMusicFragment extends Fragment {
         mRvList.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL));
 //        取消局部滚动条
         //  mRvlist.setNestedScrollingEnabled(false);
-        mListAdapter = new MusicListAdapter(getActivity(), mRvList);
+        mListAdapter = new MusicListAdapter(getActivity(), mRvList, ALBUM_LIST);
         mRvList.setAdapter(mListAdapter);
 
 

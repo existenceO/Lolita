@@ -3,10 +3,20 @@
     <!--样式-->
     <declare-styleable name="inputView">
         <!--输入框前的图标-->
-        <attr name="input_icon" format="reference"></attr>
+        <attr name="input_icon" format="reference"/>
         <!--输入框的提示内容-->
-        <attr name="input_hint" format="string"></attr>
+        <attr name="input_hint" format="string"/>
         <!--输入框是否要密文显示-->
-        <attr name="is_password" format="boolean"></attr>
+        <attr name="is_password" format="boolean"/>
+    </declare-styleable>
+    <declare-styleable name="PopItemView">
+        <!--item的图标-->
+        <attr name="item_icon" format="reference"/>
+        <!--item的下划线-->
+        <attr name="item_line" format="reference"/>
+        <!--申明属性test_id，类型是integer-->
+        <attr name="item_id" format="integer"/>
+        <!--申明属性test_msg，类型是string-->
+        <attr name="item_text" format="string"/>
     </declare-styleable>
 </resources>

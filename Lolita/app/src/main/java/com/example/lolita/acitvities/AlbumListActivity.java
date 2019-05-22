@@ -17,8 +17,9 @@ public class AlbumListActivity extends BaseActivity {
 
      private RecyclerView mRvList;
      private MusicListAdapter mListAdapter;
-     private LinearLayout mPlayAllMusic;
+     private LinearLayout mPlayAllMusic, mCollectAlbum;
      private int ALBUM_LIST = 1;
+     private int MY_CREATED_LIST = 3;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -27,14 +28,24 @@ public class AlbumListActivity extends BaseActivity {
         initView();
     }
     private void initView(){
-        initNavBar(true,"专辑列表");
+        initNavBar(true,"歌单列表");
 
         mRvList = findViewById(R.id.rv_list);
+        mCollectAlbum = findViewById(R.id.collect_list);
         mPlayAllMusic = findViewById(R.id.play_all_music);
         mRvList.setLayoutManager(new LinearLayoutManager(this));
-        mListAdapter = new MusicListAdapter( this, null );
+        mListAdapter = new MusicListAdapter( this, null,ALBUM_LIST );
         mRvList.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
         mRvList.setAdapter(mListAdapter);
+        Intent it = getIntent();
+        int num = it.getIntExtra("listType",0);//获取失败，返回0
+        System.out.println("num:" + num);
+        if(num != 0){
+            if(num == MY_CREATED_LIST){
+                mCollectAlbum.setVisibility(View.GONE);
+            }
+        }
+
         mPlayAllMusic.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
