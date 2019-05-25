@@ -2,6 +2,7 @@ package com.example.lolita.acitvities;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.support.annotation.IdRes;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -41,6 +42,14 @@ public class BaseActivity extends Activity {
            );*/
     }
 
-
+    /**
+     * findViewById
+     * @param id
+     * @param <T>
+     * @return
+     */
+    protected <T extends View> T fd (@IdRes int id) {
+        return findViewById(id);
+    }
 
 }

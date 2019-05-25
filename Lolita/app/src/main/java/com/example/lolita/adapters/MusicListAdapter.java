@@ -2,11 +2,14 @@ package com.example.lolita.adapters;
 
 import android.app.Activity;
 import android.app.DatePickerDialog;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.ServiceConnection;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
+import android.os.IBinder;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.util.DisplayMetrics;
@@ -26,6 +29,7 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.example.lolita.R;
+import com.example.lolita.Services.MusicServices;
 import com.example.lolita.acitvities.AlbumListActivity;
 import com.example.lolita.acitvities.PlayMusicActivity;
 
@@ -43,7 +47,7 @@ public class MusicListAdapter extends RecyclerView.Adapter<MusicListAdapter.View
     private View mItemView;
     private  PopupWindow popupWindow;
     private RecyclerView mRv;
-    private LinearLayout ivMore;
+    private LinearLayout ivMore, itemListView;
     private LinearLayout mAddCollectionList, mDeleteCollectionList;
     private boolean isCalculationRecyclerView;
     private View contentView;
@@ -52,16 +56,23 @@ public class MusicListAdapter extends RecyclerView.Adapter<MusicListAdapter.View
     private final int ALBUM_LIST_TYPE = 1;
     private final int MY_COLLECTED_LIST = 2;
     private final int MY_CREATED_LSIT = 3;
+    private final int MAIN_MUSIC_LIST=4;
     private  String[] items = new String[]{"第一个歌单","第二个歌单","第三个歌单"};
 
-    private int choice;
-    public MusicListAdapter (Context context, RecyclerView recyclerView,int listType){
+
+
+    private int addToListChoice;
+    private int itemposition;// item position
+
+
+        public MusicListAdapter (Context context, RecyclerView recyclerView,int listType){
 
         mContext = context;
         mRv = recyclerView;
         mlistType = listType;
 
     }
+
 
     @NonNull
     @Override
@@ -70,8 +81,11 @@ public class MusicListAdapter extends RecyclerView.Adapter<MusicListAdapter.View
          contentView = LayoutInflater.from(mContext).inflate(R.layout.pop_music_detail,null);
         mAddCollectionList = contentView.findViewById(R.id.add_collection);
         mDeleteCollectionList = contentView.findViewById(R.id.delete_collection);
+//        popupWindow
+//        if it is showing the list of the AlbumListActivity, delete_item of a song should be hidden
         if(mlistType == ALBUM_LIST_TYPE ){
             mDeleteCollectionList.setVisibility(View.GONE);
+//               if it is showing the list of the users, add_item of a song should be hidden
         }else if(mlistType == MY_COLLECTED_LIST || mlistType == MY_CREATED_LSIT){
             mAddCollectionList.setVisibility(View.GONE);
 
@@ -88,13 +102,16 @@ public class MusicListAdapter extends RecyclerView.Adapter<MusicListAdapter.View
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ViewHolder viewHolder, final int ViewType) {
+    public void onBindViewHolder(@NonNull ViewHolder viewHolder,  int position) {
         setRecyclerViewHeight();
 //        加载网络图片，服务器我的PC，没开就加载不到
 //       TODO 多张图片的加载
+        viewHolder.itemView.setTag(position);//将position保存在itemView的tag中
         Glide.with(mContext)
                 .load("http://192.168.180.83:8089/goodday/image/photo/a2-s.jpg")
                 .into(viewHolder.ivIcon);
+
+
         /**
          * 给ivMore添加监听事件，用户点击了，就弹出小页面*/
         ivMore.setOnClickListener(new View.OnClickListener() {
@@ -120,20 +137,21 @@ public class MusicListAdapter extends RecyclerView.Adapter<MusicListAdapter.View
 
 //                popupWindow.showAsDropDown(mRv);
 //                Toast.makeText(mContext, "被点击了", Toast.LENGTH_SHORT).show();
-                Log.e("viewType",Integer.toString(ViewType));
+//                Log.d("viewType",Integer.toString(ViewType));
             }
         });
-
+              viewHolder.itemView.setTag(position);
         viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //TODO 改为点击音乐
+
 //                如果是AlbumListActivity使用adapter，则点击item后跳转到播放音乐界面
                 if(mlistType == ALBUM_LIST_TYPE) {
-
+//                    TODO 获取position
                     Intent intent = new Intent(mContext, PlayMusicActivity.class);
                     mContext.startActivity(intent);
-//                    如果是个人收藏歌单或者创建的歌单
+//                    如果是个人收藏歌单或者创建的歌单，点击跳转到AlbumListActivity界面，展示所有歌曲
                 }else if(mlistType == MY_COLLECTED_LIST || mlistType == MY_CREATED_LSIT){
 
                     Intent intent = new Intent(mContext, AlbumListActivity.class);
@@ -150,6 +168,8 @@ public class MusicListAdapter extends RecyclerView.Adapter<MusicListAdapter.View
     public int getItemCount() {
         return 6;
     }
+
+
     /**
       设置弹窗之后的背景变暗
      */
@@ -171,14 +191,14 @@ private void showSingleChoiceDialog(){
     singleChoiceDialog.setSingleChoiceItems(items, 0, new DialogInterface.OnClickListener() {
         @Override
         public void onClick(DialogInterface dialog, int which) {
-            choice= which;
+            addToListChoice= which;
         }
     });
 
     singleChoiceDialog.setPositiveButton("确定", new DialogInterface.OnClickListener() {
         @Override
         public void onClick(DialogInterface dialog, int which) {
-            if (choice!=-1){
+            if (addToListChoice!=-1){
                 Toast.makeText(mContext,
                         "添加成功",
                         Toast.LENGTH_SHORT).show();
@@ -218,6 +238,7 @@ private void showSingleChoiceDialog(){
             this.itemView = itemView;
             ivIcon = itemView.findViewById(R.id.iv_icon);
             ivMore = itemView.findViewById(R.id.music_more);
+            itemListView = itemView.findViewById(R.id.music_item_list_view);//存放item的布局
 
 
 

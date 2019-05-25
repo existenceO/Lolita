@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.example.lolita.R;
@@ -19,6 +20,8 @@ import com.example.lolita.acitvities.AlbumListActivity;
 public class MusicGridAdapter extends RecyclerView.Adapter<MusicGridAdapter.ViewHolder> {
 
     private Context mContext;
+    private int itemposition;
+
     public MusicGridAdapter(Context context){
       mContext = context;
     }
@@ -33,6 +36,7 @@ public class MusicGridAdapter extends RecyclerView.Adapter<MusicGridAdapter.View
     public void onBindViewHolder(@NonNull ViewHolder viewHolder, int i) {
 //        加载网络图片
 //        TODO 多张图片的加载
+        viewHolder.itemView.setTag(i);//将position保存在itemView的tag中
         Glide.with(mContext)
                 .load("http://192.168.180.83:8089/goodday/image/photo/a2-s.jpg")
                 .into(viewHolder.ivIcon);
@@ -40,6 +44,7 @@ public class MusicGridAdapter extends RecyclerView.Adapter<MusicGridAdapter.View
         viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 Intent intent = new Intent(mContext, AlbumListActivity.class);
                 mContext.startActivity(intent);
             }

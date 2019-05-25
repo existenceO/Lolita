@@ -109,30 +109,5 @@ public class MainActivity extends AppCompatActivity {
         transaction.commit();
     }
 
-   /* private  void initView(){
 
-        //推荐歌单
-        mRvGrid = findViewById(R.id.rv_grid);
-        //设置显示的列数
-        mRvGrid.setLayoutManager(new GridLayoutManager(this, 3));
-        mRvGrid.addItemDecoration(new GridSpaceItemDecoration(getResources().getDimensionPixelSize(R.dimen.albumMarginSize), mRvGrid));//记笔记，默认1dp的分割线
-//      取消局部的滚动条
-        mRvGrid.setNestedScrollingEnabled(false);
-        mGridAdapter = new MusicGridAdapter(this);
-//          记笔记
-
-        mRvGrid.setAdapter(mGridAdapter);
-
-        //推荐音乐
-//        不知道recyclerView的高度的话，需要手动计算
-        mRvlist = findViewById(R.id.rv_list);
-        mRvlist.setLayoutManager(new LinearLayoutManager(this));//线性布局
-        mRvlist.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
-//        取消局部滚动条
-      //  mRvlist.setNestedScrollingEnabled(false);
-        mListAdapter = new MusicListAdapter(this, mRvlist);
-        mRvlist.setAdapter(mListAdapter);
-
-
-    }*/
 }

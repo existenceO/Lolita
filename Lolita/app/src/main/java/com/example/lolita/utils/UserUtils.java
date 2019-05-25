@@ -9,6 +9,7 @@ import android.widget.Toast;
 import com.blankj.utilcode.util.RegexUtils;
 import com.example.lolita.R;
 import com.example.lolita.acitvities.LoginActivity;
+import com.example.lolita.acitvities.RegisterActivity;
 
 public class UserUtils {
     /*
@@ -28,6 +29,21 @@ public class UserUtils {
         }
         return true;
     }
+    /*注册*
+    */
+     public static boolean registerInfo(Context context,String username, String phone, String pwd, String pwdCo, String email){
+
+         if(username == null || pwd == null || pwdCo == null ||
+                 email == null || phone == null) {
+             Toast.makeText(context, "请把信息填写完整", Toast.LENGTH_SHORT).show();
+             return false;
+         }
+         if(!pwd.equals(pwdCo)){
+             Toast.makeText(context, "两次密码不一致", Toast.LENGTH_SHORT);
+              return false;
+         }
+         return true;
+     }
     /*
     * 退出登录*
     */

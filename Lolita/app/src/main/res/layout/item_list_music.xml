@@ -5,6 +5,7 @@
     android:layout_height="wrap_content"
     android:orientation="horizontal"
     android:background="@drawable/item_commit_selector"
+    android:id="@+id/music_item_list_view"
     android:padding="@dimen/marginSize"
    >
 <ImageView
